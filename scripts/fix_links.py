@@ -4,14 +4,19 @@ from pathlib import Path
 
 
 SHORTCODE_RE = re.compile(
-    r"{{[<%]\s*(relref|ref)\s+\"(http[^\"]+)\"\s*[>%]}}",
+    r"{{[<%]\s*(relref|ref)\s+("
+    r"\"(http[^\"]+)\"|'(http[^']+)'|(http\S+)"
+    r")\s*[>%]}}",
     re.IGNORECASE,
 )
 
 
 def fix_file(path: Path) -> int:
     text = path.read_text(encoding="utf-8", errors="ignore")
-    new_text, count = SHORTCODE_RE.subn(lambda m: m.group(2), text)
+    def repl(match: re.Match) -> str:
+        return match.group(3) or match.group(4) or match.group(5)
+
+    new_text, count = SHORTCODE_RE.subn(repl, text)
     if count:
         path.write_text(new_text, encoding="utf-8")
     return count
