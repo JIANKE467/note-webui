@@ -1,11 +1,11 @@
 :root {
   color-scheme: light;
-  --bg: #f6f1ea;
-  --ink: #1b1a17;
-  --accent: #b44b2a;
-  --muted: #6b645c;
-  --card: #fff8f0;
-  --border: #e4d9cd;
+  --bg: #f6f6f6;
+  --ink: #111111;
+  --accent: #111111;
+  --muted: #6f6f6f;
+  --card: #ffffff;
+  --border: #d9d9d9;
 }
 
 * {
@@ -15,7 +15,7 @@
 body {
   margin: 0;
   font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
-  background: radial-gradient(circle at 20% 10%, #fff6e9, var(--bg) 60%);
+  background: linear-gradient(180deg, #ffffff 0%, var(--bg) 70%);
   color: var(--ink);
 }
 
@@ -32,7 +32,7 @@ a {
 
 .site-header {
   border-bottom: 1px solid var(--border);
-  background: #fffdf8;
+  background: #ffffff;
 }
 
 .site-title {
@@ -107,7 +107,7 @@ a {
 .site-footer {
   margin-top: 40px;
   border-top: 1px solid var(--border);
-  background: #fffdf8;
+  background: #ffffff;
   color: var(--muted);
 }
 
