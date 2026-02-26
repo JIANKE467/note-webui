@@ -55,8 +55,14 @@ jobs:
       - name: Fix front matter url
         run: python scripts/fix_frontmatter.py data
 
+      - name: Fix bundles
+        run: python scripts/fix_bundles.py data
+
       - name: Fix Hugo ref links
         run: python scripts/fix_links.py data
+
+      - name: Fix markdown links
+        run: python scripts/fix_markdown_links.py data
 
       - name: Compress images
         run: python scripts/compress_images.py data

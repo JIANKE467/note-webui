@@ -7,3 +7,7 @@ enableRobotsTXT = true
 
 [params]
   description = "基于 GitHub Pages 的个人笔记"
+
+[frontmatter]
+  date = ["date", "created_time"]
+  lastmod = ["lastmod", "last_edited_time"]
