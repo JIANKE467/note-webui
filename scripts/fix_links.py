@@ -4,8 +4,8 @@ from pathlib import Path
 
 
 SHORTCODE_RE = re.compile(
-    r"{{[<%]\s*(relref|ref)\s+("
-    r"\"(http[^\"]+)\"|'(http[^']+)'|(http\S+)"
+    r"{{[<%]\s*(relref|ref)\s*("
+    r"\"(http[^\"]+)\"|'(http[^']+)'|(http[^>\s]+)"
     r")\s*[>%]}}",
     re.IGNORECASE,
 )
