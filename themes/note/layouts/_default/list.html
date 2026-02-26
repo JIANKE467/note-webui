@@ -4,44 +4,42 @@
     {{ if .Content }}<div class="content">{{ .Content }}</div>{{ end }}
   </section>
   <section class="page-list">
+    {{ $sections := .Sections }}
+    {{ $pages := .Pages }}
     {{ if .IsHome }}
-      {{ range .Site.RegularPages }}
-        <article class="card">
-          <a class="card-title" href="{{ .RelPermalink }}">
-            {{ if .Title }}
-              {{ .Title }}
+      {{ $sections = .Sections }}
+      {{ $pages = .Pages }}
+    {{ end }}
+    {{ range $sections }}
+      <article class="card">
+        <a class="card-title" href="{{ .RelPermalink }}">
+          {{ if .Title }}
+            {{ .Title }}
+          {{ else }}
+            {{ $dir := strings.TrimSuffix "/" .File.Dir }}
+            {{ path.Base $dir }}
+          {{ end }}
+        </a>
+        <div class="card-meta">目录</div>
+      </article>
+    {{ end }}
+    {{ range $pages }}
+      <article class="card">
+        <a class="card-title" href="{{ .RelPermalink }}">
+          {{ if .Title }}
+            {{ .Title }}
+          {{ else }}
+            {{ $name := .File.BaseFileName }}
+            {{ if eq $name "index" }}
+              {{ $dir := strings.TrimSuffix "/" .File.Dir }}
+              {{ path.Base $dir }}
             {{ else }}
-              {{ $name := .File.BaseFileName }}
-              {{ if eq $name "index" }}
-                {{ $dir := strings.TrimSuffix "/" .File.Dir }}
-                {{ path.Base $dir }}
-              {{ else }}
-                {{ $name }}
-              {{ end }}
+              {{ $name }}
             {{ end }}
-          </a>
-          <div class="card-meta">{{ .Date.Format "2006-01-02" }}</div>
-        </article>
-      {{ end }}
-    {{ else }}
-      {{ range .Pages }}
-        <article class="card">
-          <a class="card-title" href="{{ .RelPermalink }}">
-            {{ if .Title }}
-              {{ .Title }}
-            {{ else }}
-              {{ $name := .File.BaseFileName }}
-              {{ if eq $name "index" }}
-                {{ $dir := strings.TrimSuffix "/" .File.Dir }}
-                {{ path.Base $dir }}
-              {{ else }}
-                {{ $name }}
-              {{ end }}
-            {{ end }}
-          </a>
-          <div class="card-meta">{{ .Date.Format "2006-01-02" }}</div>
-        </article>
-      {{ end }}
+          {{ end }}
+        </a>
+        <div class="card-meta">{{ .Date.Format "2006-01-02" }}</div>
+      </article>
     {{ end }}
   </section>
 {{ end }}
