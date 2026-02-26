@@ -52,6 +52,9 @@ jobs:
           mkdir -p data
           rsync -a --delete "$DATA_ROOT"/ data/
 
+      - name: Fix front matter url
+        run: python scripts/fix_frontmatter.py data
+
       - name: Fix Hugo ref links
         run: python scripts/fix_links.py data
 
