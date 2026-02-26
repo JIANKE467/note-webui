@@ -29,13 +29,8 @@
           {{ if .Title }}
             {{ .Title }}
           {{ else }}
-            {{ $name := .File.BaseFileName }}
-            {{ if eq $name "index" }}
-              {{ $dir := strings.TrimSuffix "/" .File.Dir }}
-              {{ path.Base $dir }}
-            {{ else }}
-              {{ $name }}
-            {{ end }}
+            {{ $dir := strings.TrimSuffix "/" .File.Dir }}
+            {{ path.Base $dir }}
           {{ end }}
         </a>
         <div class="card-meta">{{ .Date.Format "2006-01-02" }}</div>
