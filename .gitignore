@@ -1,0 +1,6 @@
+public/
+resources/
+data/
+data-tmp/
+data.zip
+*.log

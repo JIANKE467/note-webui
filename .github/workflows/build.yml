@@ -1,0 +1,75 @@
+name: build-and-deploy
+
+on:
+  push:
+    branches: ["main"]
+  schedule:
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.125.7"
+          extended: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pillow
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download data zip
+        run: |
+          curl -L -o data.zip https://github.com/JIANKE467/notion-backup-V3/archive/refs/heads/data.zip
+          rm -rf data-tmp
+          unzip -q data.zip -d data-tmp
+          DATA_ROOT=$(ls -d data-tmp/* | head -n 1)
+          rm -rf data
+          mkdir -p data
+          rsync -a --delete "$DATA_ROOT"/ data/
+
+      - name: Compress images
+        run: python scripts/compress_images.py data
+
+      - name: Build site
+        run: hugo --minify
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

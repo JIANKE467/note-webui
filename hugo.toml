@@ -1,0 +1,9 @@
+baseURL = "https://example.github.io/"
+languageCode = "zh-cn"
+title = "个人笔记"
+theme = "note"
+contentDir = "data"
+enableRobotsTXT = true
+
+[params]
+  description = "基于 GitHub Pages 的个人笔记"
