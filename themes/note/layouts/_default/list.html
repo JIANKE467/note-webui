@@ -4,11 +4,20 @@
     {{ if .Content }}<div class="content">{{ .Content }}</div>{{ end }}
   </section>
   <section class="page-list">
-    {{ range .Pages }}
-      <article class="card">
-        <a class="card-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
-        <div class="card-meta">{{ .Date.Format "2006-01-02" }}</div>
-      </article>
+    {{ if .IsHome }}
+      {{ range .Site.RegularPages }}
+        <article class="card">
+          <a class="card-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <div class="card-meta">{{ .Date.Format "2006-01-02" }}</div>
+        </article>
+      {{ end }}
+    {{ else }}
+      {{ range .Pages }}
+        <article class="card">
+          <a class="card-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <div class="card-meta">{{ .Date.Format "2006-01-02" }}</div>
+        </article>
+      {{ end }}
     {{ end }}
   </section>
 {{ end }}
