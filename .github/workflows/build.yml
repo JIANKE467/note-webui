@@ -52,6 +52,9 @@ jobs:
           mkdir -p data
           rsync -a --delete "$DATA_ROOT"/ data/
 
+      - name: Fix Hugo ref links
+        run: python scripts/fix_links.py data
+
       - name: Compress images
         run: python scripts/compress_images.py data
 
