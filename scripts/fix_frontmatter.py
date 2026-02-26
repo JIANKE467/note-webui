@@ -3,7 +3,8 @@ import re
 from pathlib import Path
 
 
-URL_RE = re.compile(r"\"url\"\\s*:\\s*\"(http[^\"]+)\"", re.IGNORECASE)
+URL_JSON_RE = re.compile(r"^[ \\t]*\"url\"\\s*:\\s*\"http[^\"]+\"\\s*,?\\s*$", re.IGNORECASE)
+URL_YAML_RE = re.compile(r"^[ \\t]*url\\s*:\\s*https?://\\S+\\s*$", re.IGNORECASE)
 
 
 def fix_file(path: Path) -> int:
@@ -16,11 +17,20 @@ def fix_file(path: Path) -> int:
         return 0
 
     front = text[:end]
-    new_front, count = URL_RE.subn(r"\"source_url\": \"\\1\"", front)
-    if count:
+    lines = front.splitlines()
+    kept = []
+    removed = 0
+    for line in lines:
+        if URL_JSON_RE.match(line) or URL_YAML_RE.match(line):
+            removed += 1
+            continue
+        kept.append(line)
+
+    if removed:
+        new_front = "\n".join(kept)
         new_text = new_front + text[end:]
         path.write_text(new_text, encoding="utf-8")
-    return count
+    return removed
 
 
 def main() -> None:
